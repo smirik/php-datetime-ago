@@ -1,0 +1,25 @@
+{
+    "name": "smirik/php-datetime-ago",
+    "description": "How much time ago in text format",
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "authors": [
+        {
+            "name": "Evgeny Smirnov",
+            "email": "smirik@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "target-dir": "Smirik/PHPDateTimeAgo",
+    "minimum-stability": "dev"
+}
