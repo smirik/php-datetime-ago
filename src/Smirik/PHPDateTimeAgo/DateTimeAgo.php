@@ -106,7 +106,7 @@ class DateTimeAgo
      */
     public function now($diff)
     {
-        if ($this->hourly($diff) && ($diff->h == 0) && ($diff->i == 0) && ($diff->s <= 1)) {
+        if ($this->hourly($diff) && ($diff->h == 0) && ($diff->i == 0) && ($diff->s <= 59)) {
             return true;
         }
         return false;
