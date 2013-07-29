@@ -20,6 +20,5 @@
     "config": {
         "bin-dir": "bin"
     },
-    "target-dir": "Smirik/PHPDateTimeAgo",
     "minimum-stability": "dev"
 }

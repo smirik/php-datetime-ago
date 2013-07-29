@@ -48,7 +48,7 @@ Customization
 ```php
 <?php
     ...
-    $date_ago->setFormatter('d.m.Y H:i:s');
+    $date_ago->setFormat('d.m.Y H:i:s');
 ```
 This setup date in format `01.01.2001 22:52:12`.
 
