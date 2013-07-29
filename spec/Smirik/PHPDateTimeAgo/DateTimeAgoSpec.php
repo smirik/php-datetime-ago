@@ -42,6 +42,9 @@ class DateTimeAgoSpec extends ObjectBehavior
     function it_checks_now()
     {
         $this->get(new \DateTime())->shouldReturn("now");
+        $this->get(new \DateTime('-5 seconds'))->shouldReturn("now");
+        $this->get(new \DateTime('-25 seconds'))->shouldReturn("now");
+        $this->get(new \DateTime('-59 seconds'))->shouldReturn("now");
     }
     
     function it_checks_minutes()
