@@ -62,6 +62,10 @@ The DateTimeAgo constructor accept `TextTranslator` file as the first argument. 
     $date_ago->setTextTranslator(new \Smirik\PHPDateTimeAgo\TextTranslator\RussianTextTranslator());
 ```
 
+#### Implementation
+
+* [How to integrate library with Symfony2](doc/Symfony2_twig_extension.md)
+
 #### Tests
 
 Most parts of the code are tested via `phpspec`. To run the tests clone the repository and run 
