@@ -114,4 +114,32 @@ class DateTimeAgoSpec extends ObjectBehavior
 
     }
 
+    function it_checks_german()
+    {
+        $this->setTextTranslator(new \Smirik\PHPDateTimeAgo\TextTranslator\GermanTextTranslator());
+
+        //now
+        $this->get(new \DateTime())->shouldReturn('jetzt');
+        $this->get(new \DateTime('-5 seconds'))->shouldReturn('jetzt');
+        $this->get(new \DateTime('-25 seconds'))->shouldReturn('jetzt');
+        $this->get(new \DateTime('-59 seconds'))->shouldReturn('jetzt');
+
+        //minutes
+        $this->get(new \DateTime('-1 minutes'))->shouldBe('vor einer Minute');
+        $this->get(new \DateTime('-3 minutes'))->shouldBe('vor 3 Minuten');
+        $this->get(new \DateTime('-25 minutes'))->shouldBe('vor 25 Minuten');
+        $this->get(new \DateTime('-59 minutes'))->shouldBe('vor 59 Minuten');
+        $this->get(new \DateTime('-61 minutes'))->shouldBe('vor einer Stunde');
+
+        //hours
+        $this->get(new \DateTime('-90 minutes'))->shouldBe('vor einer Stunde');
+        $this->get(new \DateTime('-119 minutes'))->shouldBe('vor einer Stunde');
+        $this->get(new \DateTime('-2 hours'))->shouldBe('vor 2 Stunden');
+
+        //days
+        $this->get(new \DateTime('-24 hours'))->shouldBe('vor einem Tag');
+        $this->get(new \DateTime('-2 days'))->shouldBe('vor 2 Tagen');
+        $this->get(new \DateTime('-5 days'))->shouldBe('vor 5 Tagen');
+    }
+
 }
