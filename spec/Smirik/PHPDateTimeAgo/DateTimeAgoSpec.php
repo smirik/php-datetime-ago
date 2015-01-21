@@ -142,4 +142,25 @@ class DateTimeAgoSpec extends ObjectBehavior
         $this->get(new \DateTime('-5 days'))->shouldBe('vor 5 Tagen');
     }
 
+    function it_checks_portuguese()
+    {
+        $this->setTextTranslator(new \Smirik\PHPDateTimeAgo\TextTranslator\PortugueseTextTranslator());
+
+        $this->get(new \DateTime())->shouldBe('agora');
+        $this->get(new \DateTime('-5 seconds'))->shouldReturn('agora');
+        $this->get(new \DateTime('-25 seconds'))->shouldReturn('agora');
+        $this->get(new \DateTime('-59 seconds'))->shouldReturn('agora');
+
+        $this->get(new \DateTime('-1 minutes'))->shouldBe('1 minuto atrás');
+        $this->get(new \DateTime('-3 minutes'))->shouldBe('3 minutos atrás');
+        $this->get(new \DateTime('-25 minutes'))->shouldBe('25 minutos atrás');
+        $this->get(new \DateTime('-59 minutes'))->shouldBe('59 minutos atrás');
+        $this->get(new \DateTime('-61 minutes'))->shouldBe('1 hora atrás');
+
+        $this->get(new \DateTime('-24 hours'))->shouldBe('1 dia atrás');
+        $this->get(new \DateTime('-2 days'))->shouldBe('2 dias atrás');
+        $this->get(new \DateTime('-5 days'))->shouldBe('5 dias atrás');
+
+    }
+
 }
