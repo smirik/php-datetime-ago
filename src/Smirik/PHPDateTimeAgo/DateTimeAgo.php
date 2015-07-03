@@ -145,8 +145,8 @@ class DateTimeAgo
      */
     public function days($diff)
     {
-        if ($diff->days <= $this->max_days_count) {
-            return $diff->days;
+        if ($diff->d <= $this->max_days_count) {
+            return $diff->d;
         }
         return false;
     }
