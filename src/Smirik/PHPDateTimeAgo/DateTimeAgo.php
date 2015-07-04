@@ -3,20 +3,21 @@
 namespace Smirik\PHPDateTimeAgo;
 
 use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator as EnglishTextTranslator;
+use Smirik\PHPDateTimeAgo\TextTranslator\TextTransformerInterface;
 use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface as TextTranslatorInterface;
 
 class DateTimeAgo
 {
     
     /**
-     * @var \Smirik\PHPDateTimeAgo\TextTranslator\TextTransformerInterface $text_translator
+     * @var TextTransformerInterface $text_translator
      */
     protected $text_translator;
     
     /**
      * @var integer $max_days_count
      */
-    protected $max_days_count = 10;
+    protected $max_days_count = 6;
     
     /**
      * @var string $format
@@ -69,6 +70,18 @@ class DateTimeAgo
         
         if ($this->days($diff)) {
             return $this->text_translator->days($this->days($diff));
+        }
+
+        if ($this->text_translator->supportsWeeks() && $this->weeks($diff)) {
+            return $this->text_translator->weeks($this->weeks($diff));
+        }
+
+        if ($this->text_translator->supportsMonths() && $this->months($diff)) {
+            return $this->text_translator->months($this->months($diff));
+        }
+
+        if ($this->text_translator->supportsYears() && $this->years($diff)) {
+            return $this->text_translator->years($this->years($diff));
         }
         
         return $date->format($this->format);
@@ -150,12 +163,53 @@ class DateTimeAgo
         }
         return false;
     }
+
+    /**
+     * Get Number of weeks
+     * @param \DateInterval $diff
+     * @return integer|false
+     */
+    public function weeks($diff)
+    {
+        $x = (int) round($diff->d / 7, 0);
+        if ($x < 4) {
+            return $x;
+        }
+        return false;
+    }
+
+    /**
+     * Get Number of months
+     * @param \DateInterval $diff
+     * @return integer|false
+     */
+    public function months($diff)
+    {
+        $x = (int) round($diff->d / 30, 0);
+        if ($x < 12) {
+            return $x;
+        }
+        return false;
+    }
+
+    /**
+     * Get Number of years
+     * @param \DateInterval $diff
+     * @return integer|false
+     */
+    public function years($diff)
+    {
+        return (int) round($diff->d / 365, 0);
+    }
     
     /**
      * Setters
      */
-    
-    public function setTextTranslator($text_translator)
+
+    /**
+     * @param TextTransformerInterface $text_translator
+     */
+    public function setTextTranslator(TextTransformerInterface $text_translator)
     {
         $this->text_translator = $text_translator;
     }
