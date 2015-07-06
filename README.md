@@ -14,7 +14,11 @@ Examples
 | Between 2 and 24 hours | xx hours ago |
 | Between 1 and 2 days | 1 day ago |
 | Between 2 and 10 days | xx days ago |
-| More than 10 days ago | xxxx-xx-xx |
+| More than 10 days ago | xx weeks ago |
+| More than 30 days ago | xx months ago |
+| More than 365 days ago | xx years ago |
+
+Notice that not every translator supports weeks, months and years
 
 Usage
 -----
