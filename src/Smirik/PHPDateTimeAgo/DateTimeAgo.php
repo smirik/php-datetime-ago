@@ -2,13 +2,14 @@
 
 namespace Smirik\PHPDateTimeAgo;
 
-use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator as EnglishTextTranslator;
-use Smirik\PHPDateTimeAgo\TextTranslator\TextTransformerInterface;
-use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface as TextTranslatorInterface;
+use DateInterval;
+use DateTime;
+use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
+use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface;
+
 
 class DateTimeAgo
 {
-    
     /**
      * @var TextTransformerInterface $text_translator
      */
@@ -35,14 +36,14 @@ class DateTimeAgo
     
     /**
      * Get string representation of the date with given translator
-     * @param \DateTime $date
-     * @param \DateTime|null $reference_date 
+     * @param DateTime $date
+     * @param DateTime|null $reference_date
      * @return string
      */
-    public function get(\DateTime $date, \DateTime $reference_date = null )
+    public function get(DateTime $date, DateTime $reference_date = null )
     {
         if (is_null($reference_date)) {
-            $reference_date = new \DateTime();
+            $reference_date = new DateTime();
         }
         
         $diff = $reference_date->diff($date);
@@ -50,11 +51,11 @@ class DateTimeAgo
     }
     
     /**
-     * Get string related to \DateInterval object
-     * @param \DateInterval $diff
+     * Get string related to DateInterval object
+     * @param DateInterval $diff
      * @return string
      */
-    public function getText($diff, $date)
+    public function getText(DateInterval $diff, $date)
     {
         if ($this->now($diff)) {
             return $this->text_translator->now();
@@ -89,7 +90,7 @@ class DateTimeAgo
     
     /**
      * Is date limit by day
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
     public function daily($diff)
@@ -102,7 +103,7 @@ class DateTimeAgo
     
     /**
      * Is date limit by hour
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
     public function hourly($diff)
@@ -114,10 +115,10 @@ class DateTimeAgo
     }
     
     /**
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
-    public function now($diff)
+    public function now(DateInterval $diff)
     {
         if ($this->hourly($diff) && ($diff->h == 0) && ($diff->i == 0) && ($diff->s <= 59)) {
             return true;
@@ -127,10 +128,10 @@ class DateTimeAgo
     
     /**
      * Number of minutes related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function minutes($diff)
+    public function minutes(DateInterval $diff)
     {
         if ($this->hourly($diff)) {
             return $diff->i;
@@ -140,10 +141,10 @@ class DateTimeAgo
     
     /**
      * Number of hours related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function hours($diff)
+    public function hours(DateInterval $diff)
     {
         if ($this->daily($diff)) {
             return $diff->h;
@@ -153,10 +154,10 @@ class DateTimeAgo
 
     /**
      * Number of days related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function days($diff)
+    public function days(DateInterval $diff)
     {
         if ($diff->d <= $this->max_days_count) {
             return $diff->d;
@@ -166,10 +167,10 @@ class DateTimeAgo
 
     /**
      * Get Number of weeks
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function weeks($diff)
+    public function weeks(DateInterval $diff)
     {
         $x = (int) round($diff->d / 7, 0);
         if ($x < 4) {
@@ -180,10 +181,10 @@ class DateTimeAgo
 
     /**
      * Get Number of months
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function months($diff)
+    public function months(DateInterval $diff)
     {
         $x = (int) round($diff->d / 30, 0);
         if ($x < 12) {
@@ -194,10 +195,10 @@ class DateTimeAgo
 
     /**
      * Get Number of years
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function years($diff)
+    public function years(DateInterval $diff)
     {
         return (int) round($diff->d / 365, 0);
     }
@@ -207,18 +208,24 @@ class DateTimeAgo
      */
 
     /**
-     * @param TextTransformerInterface $text_translator
+     * @param TextTranslatorInterface $text_translator
      */
-    public function setTextTranslator(TextTransformerInterface $text_translator)
+    public function setTextTranslator(TextTranslatorInterface $text_translator)
     {
         $this->text_translator = $text_translator;
     }
-    
+
+    /**
+     * @param integer $max_days_count
+     */
     public function setMaxDaysCount($max_days_count)
     {
         $this->max_days_count = $max_days_count;
     }
-    
+
+    /**
+     * @param string $format
+     */
     public function setFormat($format)
     {
         $this->format = $format;
