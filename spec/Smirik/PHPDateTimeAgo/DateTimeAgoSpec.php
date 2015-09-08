@@ -163,4 +163,41 @@ class DateTimeAgoSpec extends ObjectBehavior
 
     }
 
+    function it_checks_polish()
+    {
+        $this->setTextTranslator(new \Smirik\PHPDateTimeAgo\TextTranslator\PolishTextTranslator);
+
+        $this->get(new \DateTime())->shouldBe('teraz');
+        $this->get(new \DateTime('-5 seconds'))->shouldReturn('teraz');
+        $this->get(new \DateTime('-25 seconds'))->shouldReturn('teraz');
+        $this->get(new \DateTime('-59 seconds'))->shouldReturn('teraz');
+
+        $this->get(new \DateTime('-1 minutes'))->shouldBe('1 minutę temu');
+        $this->get(new \DateTime('-3 minutes'))->shouldBe('3 minuty temu');
+        $this->get(new \DateTime('-25 minutes'))->shouldBe('25 minut temu');
+        $this->get(new \DateTime('-59 minutes'))->shouldBe('59 minut temu');
+        $this->get(new \DateTime('-61 minutes'))->shouldBe('1 godzinę temu');
+
+        $this->get(new \DateTime('-121 minutes'))->shouldBe('2 godziny temu');
+
+        $this->get(new \DateTime('-24 hours'))->shouldBe('1 dzień temu');
+        $this->get(new \DateTime('-2 days'))->shouldBe('2 dni temu');
+        $this->get(new \DateTime('-5 days'))->shouldBe('5 dni temu');
+        $this->get(new \DateTime('-6 days'))->shouldBe('6 dni temu');
+
+        $this->get(new \DateTime('-7 days'))->shouldBe('1 tydzień temu');
+        $this->get(new \DateTime('-18 days'))->shouldBe('2 tygodnie temu');
+        $this->get(new \DateTime('-29 days'))->shouldBe('4 tygodnie temu');
+
+        $this->get(new \DateTime('-30 days'))->shouldBe('1 miesiąc temu');
+        $this->get(new \DateTime('2015-09-08'), new \DateTime('2015-08-06'))->shouldBe('1 miesiąc temu');
+        $this->get(new \DateTime('-80 days'))->shouldBe('2 miesiące temu');
+        $this->get(new \DateTime('-364 days'))->shouldBe('11 miesięcy temu');
+
+        $this->get(new \DateTime('-365 days'))->shouldBe('1 rok temu');
+        $this->get(new \DateTime('-729 days'))->shouldBe('1 rok temu');
+        $this->get(new \DateTime('-730 days'))->shouldBe('2 lata temu');
+        $this->get(new \DateTime('-95 years'))->shouldBe('95 lat temu');
+    }
+
 }
