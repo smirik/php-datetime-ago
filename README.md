@@ -77,6 +77,12 @@ Most parts of the code are tested via `phpspec`. To run the tests clone the repo
 $ php bin/phpspec run
 ```
 
+## Development workflow
+
+* In order to keep git versioning accurate please use [git-flow](https://github.com/nvie/gitflow) pattern. 
+* So all pull requests except hotfix should go to the develop branch.
+* Hotfix should go to both development branches: develop & master at the same time.
+
 ## Contribution
 
 Any contribution is welcome.
