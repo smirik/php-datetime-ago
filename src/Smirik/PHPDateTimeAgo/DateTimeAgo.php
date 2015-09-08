@@ -159,8 +159,8 @@ class DateTimeAgo
      */
     public function days(DateInterval $diff)
     {
-        if ($diff->d <= $this->max_days_count) {
-            return $diff->d;
+        if ($diff->days <= $this->max_days_count) {
+            return $diff->days;
         }
         return false;
     }
@@ -172,9 +172,8 @@ class DateTimeAgo
      */
     public function weeks(DateInterval $diff)
     {
-        $x = (int) round($diff->d / 7, 0);
-        if ($x < 4) {
-            return $x;
+        if ($diff->days < 30) {
+            return (int) floor($diff->days / 7);
         }
         return false;
     }
@@ -186,11 +185,16 @@ class DateTimeAgo
      */
     public function months(DateInterval $diff)
     {
-        $x = (int) round($diff->d / 30, 0);
-        if ($x < 12) {
+        if ($diff->days >= 365) {
+            return FALSE;
+        }
+
+        $x = (int) floor($diff->days / 30.417);
+        if ($x === 0) {
+            return 1;
+        } else {
             return $x;
         }
-        return false;
     }
 
     /**
@@ -200,7 +204,7 @@ class DateTimeAgo
      */
     public function years(DateInterval $diff)
     {
-        return (int) round($diff->d / 365, 0);
+        return (int) floor($diff->days / 365);
     }
     
     /**
