@@ -4,7 +4,8 @@ namespace Smirik\PHPDateTimeAgo\TextTranslator;
 
 abstract class AbstractTextTranslator implements TextTranslatorInterface
 {
-    
+    private $formatPattern = "%d %s";
+
     /**
      * Returns minutes with correct pluralization based on minute_words property & pluralization method
      * @param integer $minutes
@@ -34,6 +35,36 @@ abstract class AbstractTextTranslator implements TextTranslatorInterface
     {
         return $days.' '.$this->day_words[$this->pluralization($days)];
     }
+
+    /**
+     * Returns "weeks ago" like string
+     * @param integer $weeks
+     * @return string
+     */
+    public function weeks($weeks)
+    {
+        return sprintf($this->formatPattern, $weeks, $this->week_words[$this->pluralization($weeks)]);
+    }
+
+    /**
+     * Returns "months ago" like string
+     * @param integer $months
+     * @return string
+     */
+    public function months($months)
+    {
+        return sprintf($this->formatPattern, $months, $this->month_words[$this->pluralization($months)]);
+    }
+
+    /**
+     * Returns "years ago" like string
+     * @param integer $years
+     * @return string
+     */
+    public function years($years)
+    {
+        return sprintf($this->formatPattern, $years, $this->year_words[$this->pluralization($years)]);
+    }
     
     /**
      * Pluralize the number according to the language. Returns key in related array (minute_words, hour_words, day_words)
@@ -41,5 +72,35 @@ abstract class AbstractTextTranslator implements TextTranslatorInterface
      * @return integer
      */
     abstract protected function pluralization($number);
+
+    /**
+     * Does the translator support weeks
+     *
+     * @return bool
+     */
+    public function supportsWeeks()
+    {
+        return false;
+    }
+
+    /**
+     * Does the translator support months
+     *
+     * @return bool
+     */
+    public function supportsMonths()
+    {
+        return false;
+    }
+
+    /**
+     * Does the translator support years
+     *
+     * @return bool
+     */
+    public function supportsYears()
+    {
+        return false;
+    }
     
 }

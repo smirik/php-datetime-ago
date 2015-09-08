@@ -13,8 +13,12 @@ Examples
 | Between 1 and 2 hours | 1 hour ago |
 | Between 2 and 24 hours | xx hours ago |
 | Between 1 and 2 days | 1 day ago |
-| Between 2 and 10 days | xx days ago |
-| More than 10 days ago | xxxx-xx-xx |
+| Between 2 and 6 days | xx days ago |
+| 7 or more days ago | xx weeks ago |
+| 30 or more days ago | xx months ago |
+| 365 or more days ago | xx years ago |
+
+Notice that not every translator supports weeks, months and years
 
 Usage
 -----
@@ -43,7 +47,7 @@ Russian translation:
 Customization
 -------------
 
-#### Date formatter for more than 10 days
+#### Date formatter for more than 6 days
 
 ```php
 <?php

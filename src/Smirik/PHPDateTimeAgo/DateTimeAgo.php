@@ -2,21 +2,23 @@
 
 namespace Smirik\PHPDateTimeAgo;
 
-use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator as EnglishTextTranslator;
-use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface as TextTranslatorInterface;
+use DateInterval;
+use DateTime;
+use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
+use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface;
+
 
 class DateTimeAgo
 {
-    
     /**
-     * @var \Smirik\PHPDateTimeAgo\TextTranslator\TextTransformerInterface $text_translator
+     * @var TextTransformerInterface $text_translator
      */
     protected $text_translator;
     
     /**
      * @var integer $max_days_count
      */
-    protected $max_days_count = 10;
+    protected $max_days_count = 6;
     
     /**
      * @var string $format
@@ -34,14 +36,14 @@ class DateTimeAgo
     
     /**
      * Get string representation of the date with given translator
-     * @param \DateTime $date
-     * @param \DateTime|null $reference_date 
+     * @param DateTime $date
+     * @param DateTime|null $reference_date
      * @return string
      */
-    public function get(\DateTime $date, \DateTime $reference_date = null )
+    public function get(DateTime $date, DateTime $reference_date = null )
     {
         if (is_null($reference_date)) {
-            $reference_date = new \DateTime();
+            $reference_date = new DateTime();
         }
         
         $diff = $reference_date->diff($date);
@@ -49,11 +51,11 @@ class DateTimeAgo
     }
     
     /**
-     * Get string related to \DateInterval object
-     * @param \DateInterval $diff
+     * Get string related to DateInterval object
+     * @param DateInterval $diff
      * @return string
      */
-    public function getText($diff, $date)
+    public function getText(DateInterval $diff, $date)
     {
         if ($this->now($diff)) {
             return $this->text_translator->now();
@@ -70,13 +72,25 @@ class DateTimeAgo
         if ($this->days($diff)) {
             return $this->text_translator->days($this->days($diff));
         }
+
+        if ($this->text_translator->supportsWeeks() && $this->weeks($diff)) {
+            return $this->text_translator->weeks($this->weeks($diff));
+        }
+
+        if ($this->text_translator->supportsMonths() && $this->months($diff)) {
+            return $this->text_translator->months($this->months($diff));
+        }
+
+        if ($this->text_translator->supportsYears() && $this->years($diff)) {
+            return $this->text_translator->years($this->years($diff));
+        }
         
         return $date->format($this->format);
     }
     
     /**
      * Is date limit by day
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
     public function daily($diff)
@@ -89,7 +103,7 @@ class DateTimeAgo
     
     /**
      * Is date limit by hour
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
     public function hourly($diff)
@@ -101,10 +115,10 @@ class DateTimeAgo
     }
     
     /**
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return bool
      */
-    public function now($diff)
+    public function now(DateInterval $diff)
     {
         if ($this->hourly($diff) && ($diff->h == 0) && ($diff->i == 0) && ($diff->s <= 59)) {
             return true;
@@ -114,10 +128,10 @@ class DateTimeAgo
     
     /**
      * Number of minutes related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function minutes($diff)
+    public function minutes(DateInterval $diff)
     {
         if ($this->hourly($diff)) {
             return $diff->i;
@@ -127,10 +141,10 @@ class DateTimeAgo
     
     /**
      * Number of hours related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function hours($diff)
+    public function hours(DateInterval $diff)
     {
         if ($this->daily($diff)) {
             return $diff->h;
@@ -140,31 +154,82 @@ class DateTimeAgo
 
     /**
      * Number of days related to the interval or false if more.
-     * @param \DateInterval $diff
+     * @param DateInterval $diff
      * @return integer|false
      */
-    public function days($diff)
+    public function days(DateInterval $diff)
     {
         if ($diff->days <= $this->max_days_count) {
             return $diff->days;
         }
         return false;
     }
+
+    /**
+     * Get Number of weeks
+     * @param DateInterval $diff
+     * @return integer|false
+     */
+    public function weeks(DateInterval $diff)
+    {
+        if ($diff->days < 30) {
+            return (int) floor($diff->days / 7);
+        }
+        return false;
+    }
+
+    /**
+     * Get Number of months
+     * @param DateInterval $diff
+     * @return integer|false
+     */
+    public function months(DateInterval $diff)
+    {
+        if ($diff->days >= 365) {
+            return FALSE;
+        }
+
+        $x = (int) floor($diff->days / 30.417);
+        if ($x === 0) {
+            return 1;
+        } else {
+            return $x;
+        }
+    }
+
+    /**
+     * Get Number of years
+     * @param DateInterval $diff
+     * @return integer|false
+     */
+    public function years(DateInterval $diff)
+    {
+        return (int) floor($diff->days / 365);
+    }
     
     /**
      * Setters
      */
-    
-    public function setTextTranslator($text_translator)
+
+    /**
+     * @param TextTranslatorInterface $text_translator
+     */
+    public function setTextTranslator(TextTranslatorInterface $text_translator)
     {
         $this->text_translator = $text_translator;
     }
-    
+
+    /**
+     * @param integer $max_days_count
+     */
     public function setMaxDaysCount($max_days_count)
     {
         $this->max_days_count = $max_days_count;
     }
-    
+
+    /**
+     * @param string $format
+     */
     public function setFormat($format)
     {
         $this->format = $format;
