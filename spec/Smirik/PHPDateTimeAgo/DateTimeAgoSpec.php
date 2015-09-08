@@ -71,6 +71,37 @@ class DateTimeAgoSpec extends ObjectBehavior
         $this->get(new \DateTime('-5 days'))->shouldNotBe('5 days ago');
     }
 
+    function it_checks_weeks_in_english_when_enabled()
+    {
+        $translator = new \Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
+        $translator->enableWeeksMonthsYears(TRUE);
+        $this->setTextTranslator($translator);
+        $this->get(new \DateTime('-6 days'))->shouldBe('6 days ago');
+        $this->get(new \DateTime('-7 days'))->shouldBe('1 week ago');
+        $this->get(new \DateTime('-14 days'))->shouldBe('2 weeks ago');
+        $this->get(new \DateTime('-29 days'))->shouldBe('4 weeks ago');
+    }
+
+    function it_checks_months_in_english_when_enabled()
+    {
+        $translator = new \Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
+        $translator->enableWeeksMonthsYears(TRUE);
+        $this->setTextTranslator($translator);
+        $this->get(new \DateTime('-30 days'))->shouldBe('1 month ago');
+        $this->get(new \DateTime('-70 days'))->shouldBe('2 months ago');
+        $this->get(new \DateTime('-364 days'))->shouldBe('11 months ago');
+    }
+
+    function it_checks_years_in_english_when_enabled()
+    {
+        $translator = new \Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
+        $translator->enableWeeksMonthsYears(TRUE);
+        $this->setTextTranslator($translator);
+        $this->get(new \DateTime('-365 days'))->shouldBe('1 year ago');
+        $this->get(new \DateTime('-729 days'))->shouldBe('1 year ago');
+        $this->get(new \DateTime('-15 years'))->shouldBe('15 years ago');
+    }
+
     function it_checks_format()
     {
         $this->get(new \DateTime('2001-01-01 23:59'), new \DateTime('2001-01-20 01:00'))->shouldBe('2001-01-01');
