@@ -231,4 +231,43 @@ class DateTimeAgoSpec extends ObjectBehavior
         $this->get(new \DateTime('-95 years'))->shouldBe('95 lat temu');
     }
 
+    function it_checks_spanish()
+    {
+        $translator = new \Smirik\PHPDateTimeAgo\TextTranslator\SpanishTextTranslator();
+        $translator->enableWeeksMonthsYears(TRUE);
+        $this->setTextTranslator($translator);
+
+        $this->get(new \DateTime())->shouldBe('ahora');
+        $this->get(new \DateTime('-5 seconds'))->shouldReturn('ahora');
+        $this->get(new \DateTime('-25 seconds'))->shouldReturn('ahora');
+        $this->get(new \DateTime('-59 seconds'))->shouldReturn('ahora');
+
+        $this->get(new \DateTime('-1 minutes'))->shouldBe('hace 1 minuto');
+        $this->get(new \DateTime('-3 minutes'))->shouldBe('hace 3 minutos');
+        $this->get(new \DateTime('-25 minutes'))->shouldBe('hace 25 minutos');
+        $this->get(new \DateTime('-59 minutes'))->shouldBe('hace 59 minutos');
+        $this->get(new \DateTime('-61 minutes'))->shouldBe('hace 1 hora');
+
+        $this->get(new \DateTime('-121 minutes'))->shouldBe('hace 2 horas');
+
+        $this->get(new \DateTime('-24 hours'))->shouldBe('hace 1 día');
+        $this->get(new \DateTime('-2 days'))->shouldBe('hace 2 días');
+        $this->get(new \DateTime('-5 days'))->shouldBe('hace 5 días');
+        $this->get(new \DateTime('-6 days'))->shouldBe('hace 6 días');
+
+        $this->get(new \DateTime('-7 days'))->shouldBe('hace 1 semana');
+        $this->get(new \DateTime('-18 days'))->shouldBe('hace 2 semanas');
+        $this->get(new \DateTime('-29 days'))->shouldBe('hace 4 semanas');
+
+        $this->get(new \DateTime('-30 days'))->shouldBe('hace 1 mes');
+        $this->get(new \DateTime('2015-09-08'), new \DateTime('2015-08-06'))->shouldBe('hace 1 mes');
+        $this->get(new \DateTime('-80 days'))->shouldBe('hace 2 meses');
+        $this->get(new \DateTime('-364 days'))->shouldBe('hace 11 meses');
+
+        $this->get(new \DateTime('-365 days'))->shouldBe('hace 1 año');
+        $this->get(new \DateTime('-729 days'))->shouldBe('hace 1 año');
+        $this->get(new \DateTime('-730 days'))->shouldBe('hace 2 años');
+        $this->get(new \DateTime('-95 years'))->shouldBe('hace 95 años');
+    }
+
 }
