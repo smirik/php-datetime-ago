@@ -71,6 +71,13 @@ class DateTimeAgoSpec extends ObjectBehavior
         $this->get(new \DateTime('-5 days'))->shouldNotBe('5 days ago');
     }
 
+    function it_checks_datetimeimmutable()
+    {
+        $this->get(new \DateTimeImmutable('-5 seconds'))->shouldReturn("now");
+        $this->get(new \DateTimeImmutable('-25 minutes'))->shouldBe('25 minutes ago');
+        $this->get(new \DateTimeImmutable('-119 minutes'))->shouldBe('1 hour ago');
+    }
+
     function it_checks_weeks_in_english_when_enabled()
     {
         $translator = new \Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;

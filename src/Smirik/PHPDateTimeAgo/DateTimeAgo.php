@@ -4,6 +4,7 @@ namespace Smirik\PHPDateTimeAgo;
 
 use DateInterval;
 use DateTime;
+use DateTimeInterface;
 use Smirik\PHPDateTimeAgo\TextTranslator\EnglishTextTranslator;
 use Smirik\PHPDateTimeAgo\TextTranslator\TextTranslatorInterface;
 
@@ -36,11 +37,11 @@ class DateTimeAgo
     
     /**
      * Get string representation of the date with given translator
-     * @param DateTime $date
-     * @param DateTime|null $reference_date
+     * @param DateTimeInterface $date
+     * @param DateTimeInterface|null $reference_date
      * @return string
      */
-    public function get(DateTime $date, DateTime $reference_date = null )
+    public function get(\DateTimeInterface $date, \DateTimeInterface $reference_date = null )
     {
         if (is_null($reference_date)) {
             $reference_date = new DateTime();
@@ -53,6 +54,7 @@ class DateTimeAgo
     /**
      * Get string related to DateInterval object
      * @param DateInterval $diff
+     * @param DateTimeInterface $date
      * @return string
      */
     public function getText(DateInterval $diff, $date)
